@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You! - Tech2etc Ecommerce</title>
+    <link rel="stylesheet" href="style.css">
+     <script>
+        // Initialize the data layer for Google Tag Manager
+        window.dataLayer = window.dataLayer || [];
+    </script>
+</head>
+<body>
+
+    <div class="thank-you-container">
+        <div class="thank-you-content">
+            <div class="success-animation">
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+            </div>
+            <h1>Thank You For Your Order!</h1>
+            <p>Your payment was successful and your order is being processed.</p>
+            <p>Transaction ID: <strong id="transaction-id"></strong></p>
+            <a href="index.html" class="normal">Continue Shopping</a>
+        </div>
+    </div>
+    
+    <script>
+        // Display the transaction ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const transactionId = urlParams.get('tid');
+        if (transactionId) {
+            document.getElementById('transaction-id').textContent = transactionId;
+        }
+    </script>
+</body>
+</html>
