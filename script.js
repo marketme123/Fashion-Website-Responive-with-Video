@@ -262,8 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
                 // We'll create payment.html in the next step
-                // window.location.href = 'payment.html'; 
-                alert("Redirecting to payment page... (This will be built next!)");
+                window.location.href = 'payment.html';
             });
         }
         
