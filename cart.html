@@ -5,20 +5,22 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>Shopping Cart - Tech2etc Ecommerce</title>
 
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 
         <link rel="stylesheet" href="style.css">
+
+        <!-- NEW: Data Layer for Analytics -->
         <script>
-    // Initialize the data layer for Google Tag Manager
-    window.dataLayer = window.dataLayer || [];
-</script>
+            // This initializes the data layer, preparing the site for tools like Google Tag Manager.
+            window.dataLayer = window.dataLayer || [];
+        </script>
+        <!-- End of New Code -->
+
     </head>
 
     <body>
-
-        
         
         <section id="header">
             <a href="#"><img src="img/logo.png" class="logo" ></a>
@@ -43,7 +45,7 @@
     
         <section id="page-header" class="about-header">
             <h2>#Cart</h2>
-            <p>LEAVE A MESSAGE. We love to hear from you</p>
+            <p>Review your items and proceed to checkout</p>
         </section>
 
         <section id="cart" class="section-p1">
@@ -59,31 +61,10 @@
                         </tr>
                     </thead>
 
+                    <!-- IMPORTANT CHANGE: The table body is now empty. -->
+                    <!-- Our script.js file will read the cart from memory and build the rows here dynamically. -->
                     <tbody>
-                        <tr>
-                            <td><a href=""><i class="far fa-times-circle"></i></a></td>
-                            <td><img src="img/products/f1.jpg" alt=""></td>
-                            <td>Cartoon Astronaut T-shirt</td>
-                            <td>$118.19</td>
-                            <td><input type="number" value="1"></td>
-                            <td>$118.19</td>
-                        </tr>
-                        <tr>
-                            <td><a href=""><i class="far fa-times-circle"></i></a></td>
-                            <td><img src="img/products/f2.jpg" alt=""></td>
-                            <td>Cartoon Astronaut T-shirt</td>
-                            <td>$118.19</td>
-                            <td><input type="number" value="1"></td>
-                            <td>$118.19</td>
-                        </tr>
-                        <tr>
-                            <td><a href=""><i class="far fa-times-circle"></i></a></td>
-                            <td><img src="img/products/f3.jpg" alt=""></td>
-                            <td>Cartoon Astronaut T-shirt</td>
-                            <td>$118.19</td>
-                            <td><input type="number" value="1"></td>
-                            <td>$118.19</td>
-                        </tr>
+                        <!-- Items will be dynamically added here by script.js -->
                     </tbody>
             </table>
         </section>
@@ -102,7 +83,8 @@
                 <table>
                     <tr>
                         <td>Cart Subtotal</td>
-                        <td>$ 335</td>
+                        <!-- The value here will be updated by script.js -->
+                        <td>$ 0.00</td> 
                     </tr>
                     <tr>
                         <td>Shipping</td>
@@ -110,7 +92,8 @@
                     </tr>
                     <tr>
                         <td><strong>Total</strong></td>
-                        <td><strong>$ 335</strong></td>
+                        <!-- The value here will be updated by script.js -->
+                        <td><strong>$ 0.00</strong></td>
                     </tr>
                 </table>
                 <button class="normal">Proceed to checkout</button>
@@ -170,25 +153,27 @@
             </div>
         </footer>
     
-
+        <!-- NEW: Cart Slider HTML (Required on all pages) -->
+        <div id="cart-slider" class="cart-slider">
+            <div class="cart-slider-header">
+                <h3>Your Cart</h3>
+                <button id="close-slider" class="close-slider-btn">&times;</button>
+            </div>
+            <div id="cart-slider-items" class="cart-slider-items">
+                <!-- Cart items will be injected here by JavaScript -->
+            </div>
+            <div class="cart-slider-footer">
+                <div class="cart-slider-total">
+                    <strong>Total:</strong> <span id="cart-slider-total-price">$0.00</span>
+                </div>
+                <a href="cart.html" class="btn normal">Go to Cart</a>
+                <button id="clear-cart-btn" class="btn normal">Clear Cart</button>
+            </div>
+        </div>
+        <div id="cart-overlay" class="cart-overlay"></div>
+        <!-- End of New Code -->
 
         <script src="script.js"></script>
-        <!-- Cart Slider HTML (Required on all pages) -->
-<div id="cart-slider" class="cart-slider">
-    <div class="cart-slider-header">
-        <h3>Your Cart</h3>
-        <button id="close-slider" class="close-slider-btn">&times;</button>
-    </div>
-    <div id="cart-slider-items" class="cart-slider-items"></div>
-    <div class="cart-slider-footer">
-        <div class="cart-slider-total">
-            <strong>Total:</strong> <span id="cart-slider-total-price">$0.00</span>
-        </div>
-        <a href="cart.html" class="btn normal">Go to Cart</a>
-        <button id="clear-cart-btn" class="btn normal">Clear Cart</button>
-    </div>
-</div>
-<div id="cart-overlay" class="cart-overlay"></div>
 
     </body>
 
