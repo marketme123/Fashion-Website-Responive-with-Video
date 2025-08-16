@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Tech2etc Ecommerce</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // Initialize the data layer for Google Tag Manager
+        window.dataLayer = window.dataLayer || [];
+    </script>
+</head>
+
+<body>
+    <section id="header">
+        <a href="#"><img src="img/logo.png" class="logo"></a>
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li id="lg-bag"><a href="cart.html"><i class="far fa-shopping-bag"></i></a></li>
+                <a href="#" id="close"><i class="far fa-times"></i></a>
+            </ul>
+        </div>
+        <div id="mobile">
+            <a href="cart.html"><i class="far fa-shopping-bag"></i></a>
+            <i id="bar" class="fas fa-outdent"></i>
+        </div>
+    </section>
+
+    <section id="page-header" class="about-header">
+        <h2>#Checkout</h2>
+        <p>Enter your payment details to complete the purchase</p>
+    </section>
+
+    <section id="payment-details" class="section-p1">
+        <div class="checkout-container">
+            <div id="order-summary">
+                <h2>Order Summary</h2>
+                <table width="100%">
+                    <thead>
+                        <tr>
+                            <td>Product</td>
+                            <td>Subtotal</td>
+                        </tr>
+                    </thead>
+                    <tbody id="summary-table-body">
+                        <!-- Summary items will be injected here -->
+                    </tbody>
+                </table>
+                <div class="summary-total">
+                    <h3>Total: <span id="summary-total-price">$0.00</span></h3>
+                </div>
+            </div>
+
+            <div id="payment-form">
+                <h2>Shipping & Payment</h2>
+                <form id="checkout-form">
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="email" placeholder="Email Address" required>
+                    <input type="text" placeholder="Shipping Address" required>
+                    <input type="text" placeholder="Card Number" required pattern="\d{16}" title="16-digit card number">
+                    <input type="text" placeholder="MM/YY" required pattern="\d{2}/\d{2}" title="MM/YY format">
+                    <input type="text" placeholder="CVC" required pattern="\d{3}" title="3-digit CVC">
+                    <button type="submit" class="normal">Confirm Payment</button>
+                </form>
+                 <p class="disclaimer">Note: This is a demo. Do not enter real credit card information.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="section-p1">
+        <!-- Footer content from your other pages -->
+    </footer>
+
+    <!-- Cart Slider HTML (Required on all pages) -->
+    <div id="cart-slider" class="cart-slider">
+        <div class="cart-slider-header">
+            <h3>Your Cart</h3>
+            <button id="close-slider" class="close-slider-btn">&times;</button>
+        </div>
+        <div id="cart-slider-items" class="cart-slider-items"></div>
+        <div class="cart-slider-footer">
+            <div class="cart-slider-total">
+                <strong>Total:</strong> <span id="cart-slider-total-price">$0.00</span>
+            </div>
+            <a href="cart.html" class="btn normal">Go to Cart</a>
+            <button id="clear-cart-btn" class="btn normal">Clear Cart</button>
+        </div>
+    </div>
+    <div id="cart-overlay" class="cart-overlay"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
