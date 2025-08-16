@@ -9,10 +9,14 @@
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 
         <link rel="stylesheet" href="style.css">
+
+        <!-- NEW: Data Layer for Analytics -->
         <script>
-    // Initialize the data layer for Google Tag Manager
-    window.dataLayer = window.dataLayer || [];
-</script>
+            // This initializes the data layer, preparing the site for tools like Google Tag Manager.
+            window.dataLayer = window.dataLayer || [];
+        </script>
+        <!-- End of New Code -->
+
     </head>
 
     <body>
@@ -156,24 +160,28 @@
             </div>
         </footer>
     
+        <!-- NEW: Cart Slider HTML (Required on all pages) -->
+        <div id="cart-slider" class="cart-slider">
+            <div class="cart-slider-header">
+                <h3>Your Cart</h3>
+                <button id="close-slider" class="close-slider-btn">&times;</button>
+            </div>
+            <div id="cart-slider-items" class="cart-slider-items">
+                <!-- Cart items will be injected here by JavaScript -->
+            </div>
+            <div class="cart-slider-footer">
+                <div class="cart-slider-total">
+                    <strong>Total:</strong> <span id="cart-slider-total-price">$0.00</span>
+                </div>
+                <a href="cart.html" class="btn normal">Go to Cart</a>
+                <button id="clear-cart-btn" class="btn normal">Clear Cart</button>
+            </div>
+        </div>
+        <div id="cart-overlay" class="cart-overlay"></div>
+        <!-- End of New Code -->
+
 
         <script src="script.js"></script>
-        <!-- Cart Slider HTML (Required on all pages) -->
-<div id="cart-slider" class="cart-slider">
-    <div class="cart-slider-header">
-        <h3>Your Cart</h3>
-        <button id="close-slider" class="close-slider-btn">&times;</button>
-    </div>
-    <div id="cart-slider-items" class="cart-slider-items"></div>
-    <div class="cart-slider-footer">
-        <div class="cart-slider-total">
-            <strong>Total:</strong> <span id="cart-slider-total-price">$0.00</span>
-        </div>
-        <a href="cart.html" class="btn normal">Go to Cart</a>
-        <button id="clear-cart-btn" class="btn normal">Clear Cart</button>
-    </div>
-</div>
-<div id="cart-overlay" class="cart-overlay"></div>
     </body>
 
 </html>
