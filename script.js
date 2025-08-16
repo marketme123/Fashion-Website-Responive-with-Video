@@ -19,11 +19,14 @@ if (close) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Initialize Data Layer
+    // Initialize Data Layer for analytics
     window.dataLayer = window.dataLayer || [];
 
     // --- Global Cart State ---
+    // Load cart from localStorage or start with an empty array
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Function to save the current cart state to localStorage
     const saveCart = () => {
         localStorage.setItem('cart', JSON.stringify(cart));
     };
@@ -49,13 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const addToCart = (product) => {
         const existingProductIndex = cart.findIndex(item => item.id === product.id);
         if (existingProductIndex > -1) {
+            // If product exists, increase quantity
             cart[existingProductIndex].quantity += product.quantity || 1;
         } else {
+            // If new product, add it to the cart
             if (!product.quantity) product.quantity = 1;
             cart.push(product);
         }
         
-        // Data Layer Push for 'add_to_cart'
+        // Data Layer Push for 'add_to_cart' event
         dataLayer.push({
             event: 'add_to_cart',
             ecommerce: {
@@ -68,9 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        saveCart();
-        updateAllCartViews();
-        openSlider();
+        saveCart(); // Save updated cart to localStorage
+        updateAllCartViews(); // Update all visible cart elements
+        openSlider(); // Open the slider to show the item was added
     };
 
     const updateQuantity = (productId, change) => {
@@ -78,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (productIndex > -1) {
             cart[productIndex].quantity += change;
             if (cart[productIndex].quantity <= 0) {
+                // If quantity drops to 0 or less, remove the item
                 removeItem(productId);
             } else {
                 saveCart();
@@ -101,9 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const removeItem = (productId) => {
         const removedItem = cart.find(item => item.id === productId);
+        // Create a new cart array excluding the removed item
         cart = cart.filter(item => item.id !== productId);
 
-         // Data Layer Push for 'remove_from_cart'
+         // Data Layer Push for 'remove_from_cart' event
         if(removedItem) {
             dataLayer.push({
                 event: 'remove_from_cart',
@@ -123,14 +130,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     const clearCart = () => {
-        cart = [];
+        cart = []; // Empty the cart array
         saveCart();
         updateAllCartViews();
     };
     
     const calculateTotal = () => cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-    // --- Event Listeners ---
+    // --- Event Listeners Setup ---
     if (closeSliderBtn) closeSliderBtn.addEventListener('click', closeSlider);
     if (cartOverlay) cartOverlay.addEventListener('click', closeSlider);
     if (clearCartBtn) {
@@ -141,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Listener for all product grid "Add to Cart" buttons
     document.querySelectorAll('.cart-btn').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
@@ -154,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Listener for the single product page "Add to Cart" button
     const singleAddToCartBtn = document.querySelector('.add-to-cart-single');
     if (singleAddToCartBtn) {
         singleAddToCartBtn.addEventListener('click', (e) => {
@@ -170,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Event Delegation for Slider Actions
+    // Event Delegation for Slider Actions (quantity changes, remove)
     if (cartSliderItemsContainer) {
         cartSliderItemsContainer.addEventListener('click', (e) => {
             const target = e.target;
@@ -185,9 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Page-Specific Logic ---
-    const pageId = document.body.id;
-
-    // --- CART PAGE ---
+    
+    // --- CART PAGE Logic (cart.html) ---
     if (document.getElementById('cart')) {
         const cartTableBody = document.querySelector('#cart tbody');
         const cartSubtotalEl = document.querySelector('#subtotal table tr:nth-child(1) td:nth-child(2)');
@@ -196,8 +204,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const updateCartPage = () => {
             if (!cartTableBody) return;
-            cartTableBody.innerHTML = '';
+            cartTableBody.innerHTML = ''; // Clear the table
             
+            // Build table rows from the cart array
             cart.forEach(item => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -212,10 +221,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             const total = calculateTotal();
-            if (cartSubtotalEl) cartSubtotalEl.textContent = `$${total.toFixed(2)}`;
-            if (cartTotalEl) cartTotalEl.textContent = `$${total.toFixed(2)}`;
+            if (cartSubtotalEl) cartSubtotalEl.textContent = `$ ${total.toFixed(2)}`;
+            if (cartTotalEl) cartTotalEl.textContent = `$ ${total.toFixed(2)}`;
         };
         
+        // Listen for clicks on remove icons within the main cart table
         cartTableBody.addEventListener('click', e => {
             if (e.target.closest('.remove-item-main')) {
                 e.preventDefault();
@@ -223,14 +233,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
+        // Listen for changes in the quantity input fields
         cartTableBody.addEventListener('change', e => {
             if (e.target.classList.contains('quantity-main')) {
                 setQuantity(e.target.dataset.id, parseInt(e.target.value));
             }
         });
-
+        
+        // Handle "Proceed to Checkout" click
         if (proceedToCheckoutBtn) {
             proceedToCheckoutBtn.addEventListener('click', () => {
+                if(cart.length === 0){
+                    alert("Your cart is empty. Please add items before proceeding to checkout.");
+                    return;
+                }
                 // Data Layer Push for 'begin_checkout'
                 dataLayer.push({
                     event: 'begin_checkout',
@@ -245,11 +261,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         currency: 'USD'
                     }
                 });
-                window.location.href = 'payment.html';
+                // We'll create payment.html in the next step
+                // window.location.href = 'payment.html'; 
+                alert("Redirecting to payment page... (This will be built next!)");
             });
         }
         
-        // Data Layer Push for 'view_cart'
+        // Data Layer Push for 'view_cart' when the page loads
         dataLayer.push({
             event: 'view_cart',
             ecommerce: {
@@ -263,70 +281,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 currency: 'USD'
             }
         });
-
+        
+        // Make the update function globally accessible for this page
         window.updateCartPage = updateCartPage;
     }
     
-    // --- PAYMENT PAGE ---
-    if (document.getElementById('payment-details')) {
-        const summaryTableBody = document.getElementById('summary-table-body');
-        const summaryTotalPriceEl = document.getElementById('summary-total-price');
-        const checkoutForm = document.getElementById('checkout-form');
-        
-        const updatePaymentPage = () => {
-            if (!summaryTableBody) return;
-            summaryTableBody.innerHTML = '';
-            cart.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.name} (x${item.quantity})</td>
-                    <td>$${(item.price * item.quantity).toFixed(2)}</td>
-                `;
-                summaryTableBody.appendChild(row);
-            });
-            const total = calculateTotal();
-            if(summaryTotalPriceEl) summaryTotalPriceEl.textContent = `$${total.toFixed(2)}`;
-        };
-
-        if (checkoutForm) {
-            checkoutForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const transactionId = `TID${Date.now()}`;
-                
-                 // Data Layer Push for 'purchase'
-                dataLayer.push({
-                    event: 'purchase',
-                    ecommerce: {
-                        transaction_id: transactionId,
-                        value: calculateTotal(),
-                        currency: 'USD',
-                        items: cart.map(item => ({
-                            item_id: item.id,
-                            item_name: item.name,
-                            price: item.price,
-                            quantity: item.quantity
-                        }))
-                    }
-                });
-                
-                // Clear cart and redirect
-                clearCart();
-                window.location.href = `thankyou.html?tid=${transactionId}`;
-            });
-        }
-        
-        window.updatePaymentPage = updatePaymentPage;
-    }
-    
-
     // --- Central Update Function ---
+    // This function is called anytime the cart changes. It updates ALL cart displays.
     const updateAllCartViews = () => {
-        // Update Slider
+        // Update Slider View
         if(cartSliderItemsContainer){
-            cartSliderItemsContainer.innerHTML = '';
+            cartSliderItemsContainer.innerHTML = ''; // Clear slider
             if (cart.length === 0) {
                 cartSliderItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
             } else {
+                // Build slider items from the cart array
                 cart.forEach(item => {
                     const itemEl = document.createElement('div');
                     itemEl.classList.add('cart-slider-item');
@@ -349,17 +318,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if(cartSliderTotalPriceEl) cartSliderTotalPriceEl.textContent = `$${calculateTotal().toFixed(2)}`;
         }
         
-        // Update Cart Page (if function exists)
+        // Update Cart Page View (if the function is available on the current page)
         if (typeof window.updateCartPage === 'function') {
             window.updateCartPage();
         }
-
-        // Update Payment Page (if function exists)
-        if (typeof window.updatePaymentPage === 'function') {
-            window.updatePaymentPage();
-        }
     };
 
-    // Initial Load
+    // Initial Load: Update all views with data from localStorage when the site first loads.
     updateAllCartViews();
 });
