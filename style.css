@@ -1107,6 +1107,10 @@ footer .copyright {
   font-size: 13px;
 }
 
+#coupon div {
+  display: flex;
+}
+
 /* Start Media Query */
 
 @media (max-width: 799px) {
