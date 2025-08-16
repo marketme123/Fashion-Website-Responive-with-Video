@@ -1376,3 +1376,43 @@ footer .copyright {
     padding: 20px;
   }
 }
+
+/* Add these styles to your existing CSS */
+#lg-bag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#lg-bag a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+#lg-bag a i {
+    font-size: 18px;
+    line-height: 1;
+}
+
+#mobile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#mobile a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+#mobile i {
+    line-height: 1;
+}
