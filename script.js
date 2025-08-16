@@ -284,6 +284,72 @@ document.addEventListener('DOMContentLoaded', () => {
         // Make the update function globally accessible for this page
         window.updateCartPage = updateCartPage;
     }
+
+    // --- PAYMENT PAGE Logic (payment.html) ---
+    if (document.getElementById('payment-details')) {
+        const summaryTableBody = document.getElementById('summary-table-body');
+        const summaryTotalPriceEl = document.getElementById('summary-total-price');
+        const checkoutForm = document.getElementById('checkout-form');
+
+        const updatePaymentPage = () => {
+            if (!summaryTableBody) return;
+            summaryTableBody.innerHTML = ''; // Clear the summary table
+
+            // Build summary rows from the cart array
+            cart.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name} (x${item.quantity})</td>
+                    <td>$${(item.price * item.quantity).toFixed(2)}</td>
+                `;
+                summaryTableBody.appendChild(row);
+            });
+
+            const total = calculateTotal();
+            if (summaryTotalPriceEl) summaryTotalPriceEl.textContent = `$${total.toFixed(2)}`;
+        };
+
+        // Handle "Confirm Payment" form submission
+        if (checkoutForm) {
+            checkoutForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Stop the form from submitting the traditional way
+
+                if (cart.length === 0) {
+                    alert("Your cart is empty.");
+                    window.location.href = 'shop.html'; // Redirect to shop if cart is empty
+                    return;
+                }
+
+                // Simulate a transaction ID
+                const transactionId = 'tx_' + new Date().getTime() + Math.random().toString(36).substring(2, 9);
+
+                // Data Layer Push for 'purchase' event
+                dataLayer.push({
+                    event: 'purchase',
+                    ecommerce: {
+                        transaction_id: transactionId,
+                        value: calculateTotal(),
+                        currency: 'USD',
+                        items: cart.map(item => ({
+                            item_id: item.id,
+                            item_name: item.name,
+                            price: item.price,
+                            quantity: item.quantity
+                        }))
+                    }
+                });
+
+                // Clear the cart
+                clearCart();
+
+                // Redirect to a thank you page
+                window.location.href = `thankyou.html?tid=${transactionId}`;
+            });
+        }
+
+        // Make the update function globally accessible for this page
+        window.updatePaymentPage = updatePaymentPage;
+    }
     
     // --- Central Update Function ---
     // This function is called anytime the cart changes. It updates ALL cart displays.
@@ -320,6 +386,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update Cart Page View (if the function is available on the current page)
         if (typeof window.updateCartPage === 'function') {
             window.updateCartPage();
+        }
+
+        // Update Payment Page View (if the function is available on the current page)
+        if (typeof window.updatePaymentPage === 'function') {
+            window.updatePaymentPage();
         }
     };
 
