@@ -6,7 +6,7 @@
 .cart-slider {
     position: fixed;
     top: 0;
-    right: -100%;
+    right: -100%; /* Start hidden off-screen */
     width: 380px;
     height: 100vh;
     background-color: #fff;
@@ -17,7 +17,7 @@
     transition: right 0.4s ease-in-out;
 }
 .cart-slider.active {
-    right: 0;
+    right: 0; /* Class added by JS to slide it in */
 }
 .cart-slider-header {
     display: flex;
